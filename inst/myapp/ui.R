@@ -138,5 +138,23 @@ ui <- navbarPage(
       gofigur:::kmUI("km"),
       gofigur:::providedUI("provided")
     )
+  ),
+  # Advanced features
+  tabPanel(
+    "Advanced Features",
+    tabsetPanel(
+      tabPanel(
+        "Multiple Plots",
+        sidebarLayout(
+          sidebarPanel(
+             "Import additional figures",
+             
+          ),
+          mainPanel(
+            p("Show figure here")
+          )
+        )
+      ) 
+    )
   )
 )
