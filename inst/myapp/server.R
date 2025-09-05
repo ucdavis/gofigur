@@ -17,4 +17,9 @@ server <- function(input, output, session) {
   gofigur:::kmServer("km", data = data, data_class = data_class)
   gofigur:::providedServer("provided", data = data)
   
+  # advanced tab
+  advanced_data <- gofigur:::import_multiServer("multi")
+  
+  gofigur:::multiplotServer("mplot", data = advanced_data)
+  
 }
