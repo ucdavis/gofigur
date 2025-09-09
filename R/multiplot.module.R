@@ -15,6 +15,23 @@ multiplotUI <- function(id) {
             "Vertical Grid"
           ),
           selected = "Default"
+        ),
+        numericInput(
+          NS(id, "n_rows"),
+          "Number of Rows",
+          value = 1,
+          min = 1
+        ),
+        numericInput(
+          NS(id, "n_cols"),
+          "Number of Columns",
+          value = 1,
+          min = 1
+        ),
+        textInput(
+          NS(id, "panel_labels"),
+          label = "Panel labels ('AUTO', 'auto', or user defined separate by '|')",
+          value = "AUTO"
         )
       ),
       mainPanel(
@@ -27,6 +44,25 @@ multiplotUI <- function(id) {
 
 multiplotServer <- function(id, data) {
   shiny::moduleServer(id, function(input, output, session) {
+    
+    # update n_rows and n_cols to have max = length(data)
+    observeEvent(data(), {
+      updateNumericInput(
+        session,
+        "n_rows",
+        value = ceiling(length(data()) / 2),
+        max = length(data())
+      )
+    })
+    
+    observeEvent(data(), {
+      updateNumericInput(
+        session,
+        "n_cols",
+        value = ceiling(length(data()) / 2),
+        max = length(data())
+      )
+    })
     
     # process theme
     user_theme <- reactive({
@@ -41,6 +77,15 @@ multiplotServer <- function(id, data) {
       )
     })
     
+    # process panel_labels
+    labels <- reactive({
+      ifelse(
+        grepl("\\|", input$panel_labels),
+        stringr::str_split(input$panels, "\\|"),
+        input$panel_labels
+      )
+    })
+    
     # apply theme
     plot_data <- reactive({
       lapply(data(), function(x) x + user_theme())
@@ -49,7 +94,11 @@ multiplotServer <- function(id, data) {
     # plot
     plot <- reactive({
       cowplot::plot_grid(
-        plotlist = plot_data()
+        plotlist = plot_data(),
+        nrow = input$n_rows,
+        ncol = input$n_cols,
+        labels = labels(),
+        align = "hv"
       )
     })
     
