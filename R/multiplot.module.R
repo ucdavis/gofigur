@@ -29,6 +29,11 @@ multiplotUI <- function(id) {
           min = 1
         ),
         textInput(
+          NS(id, "plot_title"),
+          label = "Overall Plot Title",
+          value = NULL
+        ),
+        textInput(
           NS(id, "panel_labels"),
           label = "Panel labels ('AUTO', 'auto', or user defined separate by '|')",
           value = "AUTO"
@@ -102,7 +107,27 @@ multiplotServer <- function(id, data) {
       )
     })
     
-    output$mplot <- renderPlot({plot()})
+    # add plot title if provided
+    plot_final <- reactive({
+      if (!is.null(input$plot_title)) {
+        cowplot::plot_grid(
+          cowplot::ggdraw() +
+            cowplot::draw_label(
+              input$plot_title,
+              fontface = "bold",
+              x = 0,
+              hjust = 0
+            ),
+          plot(),
+          nrow = 2,
+          rel_heights = c(0.1, 1)
+        )
+      } else {
+        plot()
+      }
+    })
+    
+    output$mplot <- renderPlot({plot_final()})
     
     # download handler
     opts <- reactive({
