@@ -3,7 +3,19 @@ multiplotUI <- function(id) {
     "Multi-panel Plot",
     sidebarLayout(
       sidebarPanel(
-        p("place holder")
+        selectInput(
+          NS(id, "theme"),
+          "Plot Theme",
+          choices = c(
+            "Default",
+            "Black and White",
+            "Classic",
+            "Half Open",
+            "Horizontal Grid",
+            "Vertical Grid"
+          ),
+          selected = "Default"
+        )
       ),
       mainPanel(
         plotOutput(NS(id, "mplot")),
@@ -15,11 +27,29 @@ multiplotUI <- function(id) {
 
 multiplotServer <- function(id, data) {
   shiny::moduleServer(id, function(input, output, session) {
-
+    
+    # process theme
+    user_theme <- reactive({
+      switch(
+        input$theme,
+        "Default" = ggplot2::theme(),
+        "Black and White" = ggplot2::theme_bw(),
+        "Classic" = ggplot2::theme_classic(),
+        "Half Open" = cowplot::theme_half_open(),
+        "Horizontal Grid" = cowplot::theme_minimal_hgrid(),
+        "Vertical Grid" = cowplot::theme_minimal_vgrid()
+      )
+    })
+    
+    # apply theme
+    plot_data <- reactive({
+      lapply(data(), function(x) x + user_theme())
+    })
+    
     # plot
     plot <- reactive({
       cowplot::plot_grid(
-        plotlist = data()
+        plotlist = plot_data()
       )
     })
     
