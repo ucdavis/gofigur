@@ -50,22 +50,30 @@ multiplotUI <- function(id) {
 multiplotServer <- function(id, data) {
   shiny::moduleServer(id, function(input, output, session) {
     
-    # update n_rows and n_cols to have max = length(data)
+    # store number of figures
+    num_fig <- reactive({
+      req(data())
+      
+      length(data())
+    })
+    # update n_rows and n_cols to have 
+    #   1) max = length(data) and 
+    #   2) square dimensions as cowplot::plot_grid does by default
     observeEvent(data(), {
       updateNumericInput(
         session,
-        "n_rows",
-        value = ceiling(length(data()) / 2),
-        max = length(data())
+        "n_cols",
+        value = ceiling(sqrt(num_fig())),
+        max = num_fig()
       )
     })
     
     observeEvent(data(), {
       updateNumericInput(
         session,
-        "n_cols",
-        value = ceiling(length(data()) / 2),
-        max = length(data())
+        "n_rows",
+        value = ceiling(num_fig() / ceiling(sqrt(num_fig()))),
+        max = num_fig()
       )
     })
     

@@ -19,6 +19,14 @@ server <- function(input, output, session) {
   
   # advanced tab
   advanced_data <- gofigur:::import_multiServer("multi")
+  multi_names <- gofigur:::data_multiServer("data_multi", data = advanced_data)
+  
+  output$plot_names <- DT::renderDataTable({
+    if ((!is.null(multi_names()))) {
+      DT::datatable(multi_names(), rownames = FALSE, 
+                    options = list(ordering = FALSE))
+    }
+  })
   
   gofigur:::multiplotServer("mplot", data = advanced_data)
   

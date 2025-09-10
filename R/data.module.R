@@ -50,17 +50,16 @@ dataServer <- function(id, data) {
     # get class of each variable
     reactive({
       req(data())
-      req(nrow(data()) > 0)
       
-      if ((!is.null(data())) & all(class(data()) != "gg")) {
-        data.frame(
-          "Variable" = colnames(data()),
-          "Class" = sapply(1:ncol(data()), function(x){class(data()[[x]])[1]})
-        )
-      } else if ((!is.null(data())) & any(class(data()) == "gg")) {
+      if ((!is.null(data())) & any(class(data()) == "gg")) {
         data.frame(
           "Variable" = "import",
           "Class" = "ggplot object"
+        )
+      } else if ((!is.null(data())) & all(class(data()) != "gg") & nrow(data()) > 0) {
+        data.frame(
+          "Variable" = colnames(data()),
+          "Class" = sapply(1:ncol(data()), function(x){class(data()[[x]])[1]})
         )
       }
     })

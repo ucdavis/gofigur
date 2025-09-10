@@ -144,10 +144,9 @@ ui <- navbarPage(
     "Advanced Features",
     tabsetPanel(
       tabPanel(
-        "Import multiple figures",
-        fluidRow(
-          gofigur:::import_multiUI("multi")
-        )
+        "Import Multiple Figures",
+        gofigur:::import_multiUI("multi"),
+        gofigur:::data_multiUI("data_multi"),
       ),
       gofigur:::multiplotUI("mplot")
     )

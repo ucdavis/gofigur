@@ -1,23 +1,18 @@
 import_multiUI <- function(id) {
   htmltools::tagList(
-    fluidRow(
-      "Import Multiple Figures",
-      column(width = 1),
-      column(
-        width = 4,
-        fileInput(
-          NS(id, "upload"), 
-          multiple = TRUE,
-          NULL, 
-          accept = c(
-            ".rds"
-          )
-        ),
-        actionButton(
-          inputId = NS(id, "go"),
-          "Upload!",
-          icon = shiny::icon("file")
+    sidebarPanel(
+      fileInput(
+        NS(id, "upload"), 
+        multiple = TRUE,
+        NULL, 
+        accept = c(
+          ".rds"
         )
+      ),
+      actionButton(
+        inputId = NS(id, "go"),
+        "Upload!",
+        icon = shiny::icon("file")
       )
     )
   )
@@ -36,7 +31,7 @@ import_multiServer <- function(id) {
         plot_files$datapath,
         function(x) readRDS(x)
       )
-      
+      names(import_list) <- plot_files$name
       import_list
     })
   })
