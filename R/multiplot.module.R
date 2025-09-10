@@ -16,6 +16,11 @@ multiplotUI <- function(id) {
           ),
           selected = "Default"
         ),
+        textInput(
+          NS(id, "order"),
+          "Panel Order (Figure Number Separated by '|')",
+          value = NULL
+        ),
         numericInput(
           NS(id, "n_rows"),
           "Number of Rows",
@@ -77,6 +82,14 @@ multiplotServer <- function(id, data) {
       )
     })
     
+    observeEvent(data(), {
+      updateTextInput(
+        session,
+        "order",
+        value = paste(seq(1, length(data()), 1), collapse = "|")
+      )
+    })
+    
     # process theme
     user_theme <- reactive({
       switch(
@@ -99,15 +112,32 @@ multiplotServer <- function(id, data) {
       )
     })
     
+    # process panel order
+    p_order <- reactive({
+      # split order by '|' and return as single character that we then convert
+      # to numeric to specify the index order
+      stringr::str_split_1(input$order, "\\|") |> as.numeric()
+    })
+    
     # apply theme
     plot_data <- reactive({
+      req(data())
+      
       lapply(data(), function(x) x + user_theme())
     })
+    
+    # order plot data
+    plot_data_ordered <- reactive({
+      req(plot_data())
+      
+      plot_data()[p_order()]
+    })
+    
     
     # plot
     plot <- reactive({
       cowplot::plot_grid(
-        plotlist = plot_data(),
+        plotlist = plot_data_ordered(),
         nrow = input$n_rows,
         ncol = input$n_cols,
         labels = labels(),
