@@ -22,17 +22,21 @@ import_multiServer <- function(id) {
   shiny::moduleServer(id, function(input, output, session) {
     # import data using appropriate function
     eventReactive(input$go, {
-      shiny::req(input$upload)
-      # Store files
-      plot_files <- input$upload
-      
-      # Import each file
-      import_list <- lapply(
-        plot_files$datapath,
-        function(x) readRDS(x)
-      )
-      names(import_list) <- plot_files$name
-      import_list
-    })
+      if (!is.null(input$upload)) {
+        # Store files
+        plot_files <- input$upload
+        
+        # Import each file
+        import_list <- lapply(
+          plot_files$datapath,
+          function(x) readRDS(x)
+        )
+        names(import_list) <- plot_files$name
+        import_list
+      } else {
+        NULL
+      }
+    },
+    ignoreNULL = FALSE)
   })
 }
