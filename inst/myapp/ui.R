@@ -22,8 +22,12 @@ ui <- navbarPage(
   tags$head(tags$link(rel="shortcut icon", href="favicon.png")),
   # tags$head(tags$link(rel="shortcut icon", href="favicon.ico")),
   # replace title with logo on navbar
-  title = div(img(src="Go FiguR.png",
-                  width = "90px", height = "60px")),
+  title = div(img(
+    src = "Go FiguR.png",
+    alt = "GoFiguR",
+    width = "90px",
+    height = "60px"
+  )),
   # title in browser tab
   windowTitle = "GoFiguR",
   # adjust dimensions of navbar to accommodate logo
