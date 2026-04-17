@@ -19,51 +19,61 @@ options(
 
 
 ui <- navbarPage(
-  # add favicon to browser tab
-  tags$head(tags$link(rel="shortcut icon", href="favicon.png")),
+  # set language
+  lang = "en",
   # tags$head(tags$link(rel="shortcut icon", href="favicon.ico")),
   # replace title with logo on navbar
-  title = div(img(src="Go FiguR.png",
-                  width = "150px", height = "100px")),
+  title = div(
+    tags$img(
+      src="Go FiguR.png",
+      alt = "GoFiguR Logo",
+      width = "150px", height = "100px"
+    ),
+    alt = "GoFiguR Logo"
+  ),
   # title in browser tab
   windowTitle = "GoFiguR",
   # adjust dimensions of navbar to accommodate logo
-  header = fresh::use_theme(
-    fresh::create_theme(
-      # theme = "cerulean",
-      fresh::bs_vars_navbar(
-        height = "120px",
-        margin_bottom = "15px",
-        padding_vertical = "15px",
-        default_bg = "#022851",
-        default_color = "#FFFFFF",
-        default_link_active_bg = "#022851",
-        default_link_active_color = "#FFBF00",
-        default_link_color = "#FFFFFF",
-        default_link_hover_color = "#FFDC00"
-      ),
-      fresh::bs_vars_font(
-        size_base = "20px",
-        size_h3 = "28px"
-      ),
-      fresh::bs_vars_tabs(
-        active_link_hover_bg = "#022851",
-        active_link_hover_color = "#FFFFFF",
-        link_hover_border_color = "#008EAA"
-      ),
-      fresh::bs_vars_color(
-        brand_primary = "#022851"
+  header = tagList(
+    # add favicon to browser tab
+    tags$head(tags$link(rel="shortcut icon", href="favicon.png")),
+    fresh::use_theme(
+      fresh::create_theme(
+        # theme = "cerulean",
+        fresh::bs_vars_navbar(
+          height = "120px",
+          margin_bottom = "15px",
+          padding_vertical = "15px",
+          default_bg = "#022851",
+          default_color = "#FFFFFF",
+          default_link_active_bg = "#022851",
+          default_link_active_color = "#FFBF00",
+          default_link_color = "#FFFFFF",
+          default_link_hover_color = "#FFDC00"
+        ),
+        fresh::bs_vars_font(
+          size_base = "20px",
+          size_h1 = "28px",
+          size_h3 = "28px"
+        ),
+        fresh::bs_vars_tabs(
+          active_link_hover_bg = "#022851",
+          active_link_hover_color = "#FFFFFF",
+          link_hover_border_color = "#008EAA"
+        ),
+        fresh::bs_vars_color(
+          brand_primary = "#022851"
+        )
       )
     )
   ),
-  # theme = shinythemes::shinytheme(theme = "cyborg"),
   
   # landing page
   tabPanel(
     "Intro",
     fluidPage(
       fluidRow(
-        h3("Purpose"),
+        h1("Purpose"),
         
         p("The purpose of GoFiguR is to assist in the creation and",
           " modification of figures without requiring coding knowledge."),
@@ -78,14 +88,14 @@ ui <- navbarPage(
           )
         ),
         
-        p("Final figures can be exported to:"),
+        p("Final figures can be exported as:"),
         
         tags$ul(
           tags$li("jpeg/png/pdf/tiff for use in manuscripts or posters, or"),
           tags$li("RDS for additional modification in R.")
         ),
         
-        h3("Instructions"),
+        h1("Instructions"),
         column(
           width = 6,
           tags$ul(
