@@ -39,7 +39,6 @@ ui <- navbarPage(
           height = "90px",
           margin_bottom = "15px",
           padding_vertical = "15px"
-          
         )
       )
     )
