@@ -18,9 +18,6 @@ options(
 )
 
 ui <- navbarPage(
-  # add favicon to browser tab
-  tags$head(tags$link(rel="shortcut icon", href="favicon.png")),
-  # tags$head(tags$link(rel="shortcut icon", href="favicon.ico")),
   # replace title with logo on navbar
   title = div(img(
     src = "Go FiguR.png",
@@ -31,14 +28,19 @@ ui <- navbarPage(
   # title in browser tab
   windowTitle = "GoFiguR",
   # adjust dimensions of navbar to accommodate logo
-  header = fresh::use_theme(
-    fresh::create_theme(
-      theme = "cerulean",
-      fresh::bs_vars_navbar(
-        height = "90px",
-        margin_bottom = "15px",
-        padding_vertical = "15px"
-        
+  header = tagList(
+    # add favicon to browser tab
+    tags$head(tags$link(rel = "shortcut icon", href = "favicon.png")),
+    # tags$head(tags$link(rel="shortcut icon", href="favicon.ico")),
+    fresh::use_theme(
+      fresh::create_theme(
+        theme = "cerulean",
+        fresh::bs_vars_navbar(
+          height = "90px",
+          margin_bottom = "15px",
+          padding_vertical = "15px"
+          
+        )
       )
     )
   ),
