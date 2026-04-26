@@ -1,6 +1,6 @@
 Package: gofigur
 Title: An Amazing Shiny App
-Version: 0.0.0.9004
+Version: 0.0.1
 Authors@R: 
     person(given = "firstname",
            family = "lastname",
