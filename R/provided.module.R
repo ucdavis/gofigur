@@ -26,11 +26,15 @@ providedServer <- function(id, data) {
     map_labels <- reactive({
       shiny::req(data())
       
-      data()$labels
+      if (any(class(data()) == "S7_object")) {
+        data()@mapping
+      } else {
+        data()$labels
+      }
     })
     
     map_labels_names <- reactive({
-      shiny::req(data())
+      shiny::req(map_labels())
       
       map_labels() |> names()
     })
@@ -38,12 +42,16 @@ providedServer <- function(id, data) {
     # generate UI
     output$label_ui <- renderUI({
       purrr::map(
-        map_labels_names(), 
+        map_labels_names(),
         function(x) {
           textInput(
             inputId = NS(id, x),
             label = paste(Hmisc::capitalize(x), "Label", sep = " "),
-            value = map_labels()[[x]]
+            value = ifelse(
+              any(class(data()) == "S7_object"),
+              map_labels()[[x]] |> rlang::quo_get_expr(),
+              map_labels()[[x]]
+            )
           )
         }
       )
@@ -55,9 +63,9 @@ providedServer <- function(id, data) {
         map_labels_names(),
         function(x) input[[x]]
       )
-      
+
       names(tmp) <- map_labels_names()
-      
+
       tmp
     })
     
@@ -67,7 +75,9 @@ providedServer <- function(id, data) {
       
       tmp_data <- data()
       
-      tmp_data$labels <- new_labels()
+      if (!(any(class(data()) == "S7_object"))) {
+        tmp_data$labels <- new_labels()
+      }
       
       tmp_data
     })
@@ -86,7 +96,7 @@ providedServer <- function(id, data) {
     # plot
     plot <- reactive({
       if (any(class(data()) == "gg")) {
-        plot_data() +
+        p <- plot_data() +
           user_theme() +
           ggplot2::theme(
             # x-axis
@@ -111,6 +121,11 @@ providedServer <- function(id, data) {
               size = input$by_text_size
             )
           )
+        if (any(class(data()) == "S7_object")) {
+          # update labels
+          ggplot2::update_labels(p, labels = new_labels())
+        }
+        
       } else {
         ggplot2::ggplot() +
           ggplot2::aes(
@@ -123,7 +138,7 @@ providedServer <- function(id, data) {
       }
     })
 
-    output$provided <- renderPlot({plot()})
+    output$provided <- renderPlot({print(plot())})
 
     # download handler
     opts <- reactive({
