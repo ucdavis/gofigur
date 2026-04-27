@@ -81,6 +81,7 @@ importServer <- function(id) {
       } else {
         NULL
       }
-    })
+    },
+    ignoreNULL = FALSE)
   })
 }
