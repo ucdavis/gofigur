@@ -27,7 +27,7 @@ select_event.var.input <- function(id) {
 }
 # server
 #' @export
-select_x.var.server <- function(id, data_class, filter = c("character", "numeric")) {
+select_x.var.server <- function(id, data_class, filter = c("character", "numeric", "integer", "factor", "logical", "Date", "POSIXct")) {
   moduleServer(id, function(input, output, session) {
     observeEvent(data_class(), {
       updateSelectInput(
@@ -44,7 +44,7 @@ select_x.var.server <- function(id, data_class, filter = c("character", "numeric
 }
 
 #' @export
-select_y.var.server <- function(id, data_class, filter = c("character", "numeric")) {
+select_y.var.server <- function(id, data_class, filter = c("character", "numeric", "integer", "factor", "logical", "Date", "POSIXct")) {
   moduleServer(id, function(input, output, session) {
     observeEvent(data_class(), {
       updateSelectInput(
@@ -61,7 +61,7 @@ select_y.var.server <- function(id, data_class, filter = c("character", "numeric
 }
 
 #' @export
-select_by.var.server <- function(id, data_class, filter = c("character", "numeric")) {
+select_by.var.server <- function(id, data_class, filter = c("character", "numeric", "integer", "factor", "logical", "Date", "POSIXct")) {
   moduleServer(id, function(input, output, session) {
     observeEvent(data_class(), {
       updateSelectInput(
@@ -80,7 +80,7 @@ select_by.var.server <- function(id, data_class, filter = c("character", "numeri
 }
 
 #' @export
-select_time.var.server <- function(id, data_class, filter = c("character", "numeric")) {
+select_time.var.server <- function(id, data_class, filter = c("character", "numeric", "integer", "factor", "logical", "Date", "POSIXct")) {
   moduleServer(id, function(input, output, session) {
     observeEvent(data_class(), {
       updateSelectInput(
@@ -97,7 +97,7 @@ select_time.var.server <- function(id, data_class, filter = c("character", "nume
 }
 
 #' @export
-select_event.var.server <- function(id, data_class, filter = c("character", "numeric")) {
+select_event.var.server <- function(id, data_class, filter = c("character", "numeric", "integer", "factor", "logical", "Date", "POSIXct")) {
   moduleServer(id, function(input, output, session) {
     observeEvent(data_class(), {
       updateSelectInput(
