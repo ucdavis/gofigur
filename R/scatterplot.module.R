@@ -19,7 +19,9 @@ scatterUI <- function(id) {
 scatterServer <- function(id, data, data_class) {
   shiny::moduleServer(id, function(input, output, session) {
     # select variables
-    x_var <- select_x.var.server("x.var", data_class, "numeric")
+    x_var <- select_x.var.server(
+      "x.var", data_class, c("numeric", "Date", "POSIXct", "factor")
+    )
     y_var <- select_y.var.server("y.var", data_class, "numeric")
     by_var <- select_by.var.server("by.var", data_class)
     # Update axis labels
